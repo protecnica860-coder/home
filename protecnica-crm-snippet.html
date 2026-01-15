@@ -1,0 +1,566 @@
+<div id="protecnica-crm">
+  <style>
+    #protecnica-crm {
+      font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      color: #e9eef6;
+      background: #0b0f16;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+    }
+    #protecnica-crm * {
+      box-sizing: border-box;
+    }
+    #protecnica-crm .crm-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    #protecnica-crm .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    #protecnica-crm .brand img {
+      width: 140px;
+      height: auto;
+      display: block;
+    }
+    #protecnica-crm .crm-header h2 {
+      font-size: 20px;
+      margin: 0;
+      letter-spacing: 0.6px;
+      color: #f5f7fb;
+    }
+    #protecnica-crm .crm-header span {
+      color: #7d8aa5;
+      font-size: 13px;
+    }
+    #protecnica-crm .crm-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    #protecnica-crm .btn {
+      background: linear-gradient(135deg, #1f6bff, #6b5cff);
+      border: none;
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    #protecnica-crm .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 20px rgba(31, 107, 255, 0.35);
+    }
+    #protecnica-crm .btn.secondary {
+      background: #1c2434;
+      color: #d8e1f2;
+    }
+    #protecnica-crm .card {
+      background: #111827;
+      border: 1px solid #1f2a3a;
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 18px;
+    }
+    #protecnica-crm .grid {
+      display: grid;
+      gap: 12px;
+    }
+    #protecnica-crm .grid.columns-2 {
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+    #protecnica-crm .grid.columns-3 {
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+    #protecnica-crm label {
+      font-size: 12px;
+      color: #7d8aa5;
+      margin-bottom: 6px;
+      display: block;
+    }
+    #protecnica-crm input,
+    #protecnica-crm select,
+    #protecnica-crm textarea {
+      width: 100%;
+      background: #0f1724;
+      border: 1px solid #283549;
+      border-radius: 10px;
+      padding: 10px 12px;
+      color: #f0f4ff;
+      font-size: 14px;
+    }
+    #protecnica-crm textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+    #protecnica-crm .message {
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      margin-top: 10px;
+      display: none;
+    }
+    #protecnica-crm .message.success {
+      background: rgba(46, 204, 113, 0.15);
+      border: 1px solid rgba(46, 204, 113, 0.4);
+      color: #9ff5c5;
+    }
+    #protecnica-crm .message.error {
+      background: rgba(231, 76, 60, 0.15);
+      border: 1px solid rgba(231, 76, 60, 0.45);
+      color: #ffb3a6;
+    }
+    #protecnica-crm .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+    #protecnica-crm .table-wrapper {
+      overflow-x: auto;
+    }
+    #protecnica-crm table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 900px;
+    }
+    #protecnica-crm th,
+    #protecnica-crm td {
+      padding: 12px;
+      border-bottom: 1px solid #1f2a3a;
+      text-align: left;
+      font-size: 13px;
+    }
+    #protecnica-crm th {
+      color: #93a4c6;
+      font-weight: 600;
+    }
+    #protecnica-crm td {
+      color: #e6edf7;
+    }
+    #protecnica-crm .pill {
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(99, 102, 241, 0.2);
+      color: #c7d2fe;
+      font-size: 11px;
+      display: inline-block;
+    }
+    #protecnica-crm .inline-input {
+      width: 100%;
+      font-size: 12px;
+    }
+    @media (max-width: 768px) {
+      #protecnica-crm {
+        padding: 18px;
+      }
+      #protecnica-crm .crm-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+
+  <div class="crm-header">
+    <div class="brand">
+      <img
+        alt="ProTécnica"
+        src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='520' height='140' viewBox='0 0 520 140'><defs><linearGradient id='g1' x1='0' x2='1'><stop offset='0' stop-color='%2300f0e0'/><stop offset='1' stop-color='%2300c34e'/></linearGradient></defs><rect width='520' height='140' fill='none'/><g transform='translate(0,10)'><circle cx='60' cy='60' r='50' fill='url(%23g1)' opacity='0.2'/><path d='M60 5c20 0 36 16 36 36 0 28-20 38-36 54-16-16-36-26-36-54C24 21 40 5 60 5z' fill='url(%23g1)'/><path d='M40 52c5 12 14 20 20 24 6-4 15-12 20-24' stroke='%23ffffff' stroke-width='6' fill='none' stroke-linecap='round'/></g><text x='150' y='78' font-size='56' font-family='Segoe UI, sans-serif' font-weight='700' fill='url(%23g1)'>ProTécnica</text><text x='152' y='110' font-size='16' font-family='Segoe UI, sans-serif' fill='%23c6f7e6' letter-spacing='3'>VENTA DE PRODUCTOS E INSTALACIONES</text></svg>"
+      />
+      <div>
+        <h2>www.protecnica.cl</h2>
+        <span>Landing + Seguimiento de Leads</span>
+      </div>
+    </div>
+    <div class="crm-actions">
+      <button class="btn secondary" id="crm-export">Exportar CSV</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <form id="crm-form">
+      <div class="grid columns-3">
+        <div>
+          <label>Nombre *</label>
+          <input type="text" name="nombre" required />
+        </div>
+        <div>
+          <label>Empresa</label>
+          <input type="text" name="empresa" />
+        </div>
+        <div>
+          <label>RUT</label>
+          <input type="text" name="rut" placeholder="12.345.678-9" />
+        </div>
+        <div>
+          <label>Ciudad/Comuna</label>
+          <input type="text" name="ciudad_comuna" />
+        </div>
+        <div>
+          <label>Teléfono *</label>
+          <input type="tel" name="telefono" />
+        </div>
+        <div>
+          <label>Email *</label>
+          <input type="email" name="email" />
+        </div>
+        <div>
+          <label>Necesita</label>
+          <textarea name="necesita"></textarea>
+        </div>
+        <div>
+          <label>Vendedor asignado</label>
+          <select name="vendedor_asignado">
+            <option value="">Asignar</option>
+            <option value="Felipe">Felipe</option>
+            <option value="Jorge">Jorge</option>
+            <option value="Paulo">Paulo</option>
+            <option value="Franco">Franco</option>
+            <option value="Miguel">Miguel</option>
+            <option value="Aldo">Aldo</option>
+            <option value="Reinier">Reinier</option>
+          </select>
+        </div>
+        <div>
+          <label>Canal origen</label>
+          <select name="canal_origen">
+            <option value="GoogleAds">GoogleAds</option>
+            <option value="Meta">Meta</option>
+            <option value="SEO">SEO</option>
+            <option value="WhatsApp">WhatsApp</option>
+            <option value="Llamada">Llamada</option>
+            <option value="Presencial">Presencial</option>
+            <option value="Email">Email</option>
+            <option value="Recomendación">Recomendación</option>
+            <option value="Otro">Otro</option>
+          </select>
+        </div>
+      </div>
+      <div style="margin-top: 12px;">
+        <button class="btn" type="submit">Guardar Lead</button>
+      </div>
+      <div id="crm-message" class="message"></div>
+    </form>
+  </div>
+
+  <div class="card">
+    <div class="toolbar">
+      <div>
+        <label>Filtrar por estado</label>
+        <select id="crm-filter-state">
+          <option value="">Todos</option>
+          <option value="Nuevo">Nuevo</option>
+          <option value="Contactado">Contactado</option>
+          <option value="Cotizado">Cotizado</option>
+          <option value="Seguimiento">Seguimiento</option>
+          <option value="Ganado">Ganado</option>
+          <option value="Perdido">Perdido</option>
+        </select>
+      </div>
+      <div>
+        <label>Buscar</label>
+        <input type="text" id="crm-search" placeholder="Nombre / Empresa / Teléfono" />
+      </div>
+    </div>
+  </div>
+
+  <div class="card table-wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th>Fecha Ingreso</th>
+          <th>Nombre/Empresa</th>
+          <th>Teléfono</th>
+          <th>Canal</th>
+          <th>Vendedor</th>
+          <th>Estado</th>
+          <th>Próxima Gestión</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="crm-table"></tbody>
+    </table>
+  </div>
+
+  <script>
+    (function () {
+      const wrapper = document.getElementById("protecnica-crm");
+      const form = wrapper.querySelector("#crm-form");
+      const tableBody = wrapper.querySelector("#crm-table");
+      const message = wrapper.querySelector("#crm-message");
+      const filterState = wrapper.querySelector("#crm-filter-state");
+      const searchInput = wrapper.querySelector("#crm-search");
+      const exportBtn = wrapper.querySelector("#crm-export");
+
+      const SHEETS_ENDPOINT = "PASTE_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
+      let leads = [];
+
+      const utm = (() => {
+        const params = new URLSearchParams(window.location.search);
+        return {
+          utm_source: params.get("utm_source") || "",
+          utm_medium: params.get("utm_medium") || "",
+          utm_campaign: params.get("utm_campaign") || "",
+          utm_term: params.get("utm_term") || "",
+          utm_content: params.get("utm_content") || ""
+        };
+      })();
+
+      const formatDate = (value) => {
+        const date = value ? new Date(value) : new Date();
+        return date.toLocaleString("es-CL", {
+          dateStyle: "short",
+          timeStyle: "short"
+        });
+      };
+
+      const showMessage = (text, type = "success") => {
+        message.textContent = text;
+        message.className = `message ${type}`;
+        message.style.display = "block";
+        setTimeout(() => {
+          message.style.display = "none";
+        }, 4000);
+      };
+
+      const fetchSheets = async () => {
+        const res = await fetch(`${SHEETS_ENDPOINT}?action=getLeads`);
+        if (!res.ok) throw new Error("No se pudo cargar desde Sheets");
+        leads = await res.json();
+      };
+
+      const postSheets = async (action, payload) => {
+        const res = await fetch(SHEETS_ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ action, payload })
+        });
+        if (!res.ok) throw new Error("Error en Sheets");
+        return res.json();
+      };
+
+      const renderTable = () => {
+        const stateFilter = filterState.value;
+        const search = searchInput.value.toLowerCase();
+        const filtered = leads
+          .filter((lead) => (stateFilter ? lead.estado === stateFilter : true))
+          .filter((lead) => {
+            const target = `${lead.nombre} ${lead.empresa} ${lead.telefono}`.toLowerCase();
+            return target.includes(search);
+          })
+          .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+        tableBody.innerHTML = "";
+        filtered.forEach((lead) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${formatDate(lead.created_at)}</td>
+            <td><strong>${lead.nombre || ""}</strong><br/><span class="pill">${lead.empresa || "-"}</span></td>
+            <td>${lead.telefono || "-"}</td>
+            <td>${lead.canal_origen || "-"}</td>
+            <td>
+              <select class="inline-input" data-field="vendedor_asignado">
+                <option value="">Asignar</option>
+                <option value="Felipe">Felipe</option>
+                <option value="Jorge">Jorge</option>
+                <option value="Paulo">Paulo</option>
+                <option value="Franco">Franco</option>
+                <option value="Miguel">Miguel</option>
+                <option value="Aldo">Aldo</option>
+                <option value="Reinier">Reinier</option>
+              </select>
+            </td>
+            <td>
+              <select class="inline-input" data-field="estado">
+                <option value="Nuevo">Nuevo</option>
+                <option value="Contactado">Contactado</option>
+                <option value="Cotizado">Cotizado</option>
+                <option value="Seguimiento">Seguimiento</option>
+                <option value="Ganado">Ganado</option>
+                <option value="Perdido">Perdido</option>
+              </select>
+            </td>
+            <td>
+              <input class="inline-input" type="date" data-field="proxima_gestion" />
+            </td>
+            <td>
+              <button class="btn secondary" data-action="edit">Editar</button>
+              <button class="btn" data-action="save" style="display:none;">Guardar</button>
+              <button class="btn secondary" data-action="delete">Borrar</button>
+            </td>
+          `;
+          row.dataset.id = lead.id;
+          row.querySelectorAll("[data-field]").forEach((input) => {
+            const field = input.dataset.field;
+            if (input.tagName === "SELECT") {
+              input.value = lead[field] || (field === "estado" ? "Nuevo" : "");
+              input.disabled = true;
+            } else {
+              input.value = lead[field] || "";
+              input.readOnly = true;
+            }
+          });
+          tableBody.appendChild(row);
+        });
+      };
+
+      const resetForm = () => {
+        form.reset();
+      };
+
+      const addLead = async (payload) => {
+        await postSheets("createLead", payload);
+        await fetchSheets();
+        renderTable();
+      };
+
+      const updateLead = async (payload) => {
+        await postSheets("updateLead", payload);
+        await fetchSheets();
+        renderTable();
+      };
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const data = new FormData(form);
+        const nombre = data.get("nombre").trim();
+        const telefono = data.get("telefono").trim();
+        const email = data.get("email").trim();
+        if (!nombre) {
+          showMessage("El nombre es obligatorio.", "error");
+          return;
+        }
+        if (!telefono && !email) {
+          showMessage("Debe ingresar teléfono o email.", "error");
+          return;
+        }
+        const payload = {
+          id: `${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+          created_at: new Date().toISOString(),
+          nombre,
+          empresa: data.get("empresa") || "",
+          rut: data.get("rut") || "",
+          telefono,
+          email,
+          ciudad_comuna: data.get("ciudad_comuna") || "",
+          necesita: data.get("necesita") || "",
+          canal_origen: data.get("canal_origen") || "",
+          link_origen: window.location.href,
+          ...utm,
+          vendedor_asignado: data.get("vendedor_asignado") || "",
+          estado: "Nuevo",
+          proxima_gestion: "",
+          monto_cotizacion: "",
+          notas_internas: ""
+        };
+        try {
+          await addLead(payload);
+          showMessage("Lead guardado correctamente.", "success");
+          resetForm();
+        } catch (error) {
+          showMessage("No se pudo guardar el lead.", "error");
+        }
+      });
+
+      tableBody.addEventListener("click", async (event) => {
+        const btn = event.target.closest("button");
+        if (!btn) return;
+        const row = btn.closest("tr");
+        const leadId = row.dataset.id;
+        const lead = leads.find((item) => item.id === leadId);
+        if (!lead) return;
+
+        if (btn.dataset.action === "edit") {
+          row.querySelectorAll("[data-field]").forEach((input) => {
+            if (input.tagName === "SELECT") {
+              input.disabled = false;
+            } else {
+              input.readOnly = false;
+            }
+          });
+          row.querySelector('[data-action="save"]').style.display = "inline-block";
+          btn.style.display = "none";
+        }
+
+        if (btn.dataset.action === "save") {
+          row.querySelectorAll("[data-field]").forEach((input) => {
+            lead[input.dataset.field] = input.value;
+            if (input.tagName === "SELECT") {
+              input.disabled = true;
+            } else {
+              input.readOnly = true;
+            }
+          });
+          try {
+            await updateLead(lead);
+            showMessage("Lead actualizado.", "success");
+          } catch (error) {
+            showMessage("No se pudo actualizar.", "error");
+          }
+        }
+
+        if (btn.dataset.action === "delete") {
+          if (!confirm("¿Seguro que quieres borrar este lead?")) return;
+          showMessage("El borrado debe hacerse en Sheets.", "error");
+        }
+      });
+
+      filterState.addEventListener("change", renderTable);
+      searchInput.addEventListener("input", renderTable);
+
+      exportBtn.addEventListener("click", () => {
+        const headers = [
+          "id",
+          "created_at",
+          "nombre",
+          "empresa",
+          "rut",
+          "telefono",
+          "email",
+          "ciudad_comuna",
+          "necesita",
+          "canal_origen",
+          "link_origen",
+          "utm_source",
+          "utm_medium",
+          "utm_campaign",
+          "utm_term",
+          "utm_content",
+          "vendedor_asignado",
+          "estado",
+          "proxima_gestion",
+          "monto_cotizacion",
+          "notas_internas"
+        ];
+        const rows = leads.map((lead) => headers.map((key) => `"${(lead[key] || "").toString().replace(/"/g, '""')}"`).join(","));
+        const csv = [headers.join(","), ...rows].join("\n");
+        const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "protecnica_leads.csv";
+        link.click();
+        URL.revokeObjectURL(url);
+      });
+
+      const init = async () => {
+        try {
+          await fetchSheets();
+          renderTable();
+        } catch (error) {
+          showMessage("No se pudo conectar con Sheets.", "error");
+        }
+      };
+
+      init();
+    })();
+  </script>
+</div>
