@@ -19,6 +19,16 @@
       gap: 12px;
       margin-bottom: 20px;
     }
+    #protecnica-crm .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    #protecnica-crm .brand img {
+      width: 140px;
+      height: auto;
+      display: block;
+    }
     #protecnica-crm .crm-header h2 {
       font-size: 20px;
       margin: 0;
@@ -148,51 +158,6 @@
       width: 100%;
       font-size: 12px;
     }
-    #protecnica-crm .switch {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 12px;
-      color: #d2d9e9;
-    }
-    #protecnica-crm .switch input {
-      width: 36px;
-      height: 20px;
-      appearance: none;
-      background: #1c2434;
-      border-radius: 999px;
-      position: relative;
-      outline: none;
-      cursor: pointer;
-      transition: background 0.2s ease;
-    }
-    #protecnica-crm .switch input::after {
-      content: "";
-      position: absolute;
-      top: 2px;
-      left: 2px;
-      width: 16px;
-      height: 16px;
-      background: #e6edf7;
-      border-radius: 50%;
-      transition: transform 0.2s ease;
-    }
-    #protecnica-crm .switch input:checked {
-      background: #2563eb;
-    }
-    #protecnica-crm .switch input:checked::after {
-      transform: translateX(16px);
-    }
-    #protecnica-crm .code-block {
-      margin-top: 20px;
-      background: #0f1724;
-      border-radius: 12px;
-      padding: 16px;
-      color: #dbe7ff;
-      font-size: 12px;
-      line-height: 1.6;
-      overflow-x: auto;
-    }
     @media (max-width: 768px) {
       #protecnica-crm {
         padding: 18px;
@@ -205,15 +170,17 @@
   </style>
 
   <div class="crm-header">
-    <div>
-      <h2>www.protecnica.cl</h2>
-      <span>Landing + Seguimiento de Leads</span>
+    <div class="brand">
+      <img
+        alt="ProTécnica"
+        src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='520' height='140' viewBox='0 0 520 140'><defs><linearGradient id='g1' x1='0' x2='1'><stop offset='0' stop-color='%2300f0e0'/><stop offset='1' stop-color='%2300c34e'/></linearGradient></defs><rect width='520' height='140' fill='none'/><g transform='translate(0,10)'><circle cx='60' cy='60' r='50' fill='url(%23g1)' opacity='0.2'/><path d='M60 5c20 0 36 16 36 36 0 28-20 38-36 54-16-16-36-26-36-54C24 21 40 5 60 5z' fill='url(%23g1)'/><path d='M40 52c5 12 14 20 20 24 6-4 15-12 20-24' stroke='%23ffffff' stroke-width='6' fill='none' stroke-linecap='round'/></g><text x='150' y='78' font-size='56' font-family='Segoe UI, sans-serif' font-weight='700' fill='url(%23g1)'>ProTécnica</text><text x='152' y='110' font-size='16' font-family='Segoe UI, sans-serif' fill='%23c6f7e6' letter-spacing='3'>VENTA DE PRODUCTOS E INSTALACIONES</text></svg>"
+      />
+      <div>
+        <h2>www.protecnica.cl</h2>
+        <span>Landing + Seguimiento de Leads</span>
+      </div>
     </div>
     <div class="crm-actions">
-      <label class="switch">
-        <input id="crm-sheets-toggle" type="checkbox" />
-        <span>Modo Google Sheets</span>
-      </label>
       <button class="btn secondary" id="crm-export">Exportar CSV</button>
     </div>
   </div>
@@ -230,6 +197,10 @@
           <input type="text" name="empresa" />
         </div>
         <div>
+          <label>RUT</label>
+          <input type="text" name="rut" placeholder="12.345.678-9" />
+        </div>
+        <div>
           <label>Ciudad/Comuna</label>
           <input type="text" name="ciudad_comuna" />
         </div>
@@ -242,17 +213,21 @@
           <input type="email" name="email" />
         </div>
         <div>
-          <label>Tipo solicitud</label>
-          <select name="tipo_solicitud">
-            <option value="Equipos/Proyectos">Equipos/Proyectos</option>
-            <option value="Servicios/Mantenciones">Servicios/Mantenciones</option>
-            <option value="RCI/Incendio">RCI/Incendio</option>
-            <option value="Otro">Otro</option>
-          </select>
-        </div>
-        <div>
           <label>Necesita</label>
           <textarea name="necesita"></textarea>
+        </div>
+        <div>
+          <label>Vendedor asignado</label>
+          <select name="vendedor_asignado">
+            <option value="">Asignar</option>
+            <option value="Felipe">Felipe</option>
+            <option value="Jorge">Jorge</option>
+            <option value="Paulo">Paulo</option>
+            <option value="Franco">Franco</option>
+            <option value="Miguel">Miguel</option>
+            <option value="Aldo">Aldo</option>
+            <option value="Reinier">Reinier</option>
+          </select>
         </div>
         <div>
           <label>Canal origen</label>
@@ -305,7 +280,6 @@
           <th>Nombre/Empresa</th>
           <th>Teléfono</th>
           <th>Canal</th>
-          <th>Tipo</th>
           <th>Vendedor</th>
           <th>Estado</th>
           <th>Próxima Gestión</th>
@@ -316,79 +290,6 @@
     </table>
   </div>
 
-  <details class="card">
-    <summary style="cursor: pointer;">Code.gs para Google Apps Script (pegar tal cual)</summary>
-    <pre class="code-block" id="crm-code">function doGet(e) {
-  const action = e.parameter.action || "getLeads";
-  if (action === "getLeads") {
-    return ContentService.createTextOutput(JSON.stringify(getLeads()))
-      .setMimeType(ContentService.MimeType.JSON);
-  }
-  return ContentService.createTextOutput("Invalid action");
-}
-
-function doPost(e) {
-  const data = JSON.parse(e.postData.contents || "{}");
-  const action = data.action || "createLead";
-  if (action === "createLead") {
-    return ContentService.createTextOutput(JSON.stringify(createLead(data.payload)))
-      .setMimeType(ContentService.MimeType.JSON);
-  }
-  if (action === "updateLead") {
-    return ContentService.createTextOutput(JSON.stringify(updateLead(data.payload)))
-      .setMimeType(ContentService.MimeType.JSON);
-  }
-  return ContentService.createTextOutput("Invalid action");
-}
-
-function getSheet() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
-  let sheet = ss.getSheetByName("Leads");
-  if (!sheet) {
-    sheet = ss.insertSheet("Leads");
-    sheet.appendRow([
-      "id", "created_at", "nombre", "empresa", "telefono", "email", "ciudad_comuna",
-      "tipo_solicitud", "necesita", "canal_origen", "utm_source", "utm_medium",
-      "utm_campaign", "utm_term", "utm_content", "vendedor_asignado", "estado",
-      "proxima_gestion", "monto_cotizacion", "notas_internas"
-    ]);
-  }
-  return sheet;
-}
-
-function getLeads() {
-  const sheet = getSheet();
-  const data = sheet.getDataRange().getValues();
-  const headers = data.shift();
-  return data.map(row => {
-    const item = {};
-    headers.forEach((key, i) => item[key] = row[i]);
-    return item;
-  });
-}
-
-function createLead(payload) {
-  const sheet = getSheet();
-  const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
-  const row = headers.map(key => payload[key] || "");
-  sheet.appendRow(row);
-  return { success: true };
-}
-
-function updateLead(payload) {
-  const sheet = getSheet();
-  const data = sheet.getDataRange().getValues();
-  const headers = data.shift();
-  const idIndex = headers.indexOf("id");
-  const rowIndex = data.findIndex(row => row[idIndex] === payload.id);
-  if (rowIndex === -1) return { success: false };
-  const updateRow = headers.map(key => payload[key] || "");
-  sheet.getRange(rowIndex + 2, 1, 1, updateRow.length).setValues([updateRow]);
-  return { success: true };
-}
-</pre>
-  </details>
-
   <script>
     (function () {
       const wrapper = document.getElementById("protecnica-crm");
@@ -398,12 +299,9 @@ function updateLead(payload) {
       const filterState = wrapper.querySelector("#crm-filter-state");
       const searchInput = wrapper.querySelector("#crm-search");
       const exportBtn = wrapper.querySelector("#crm-export");
-      const sheetsToggle = wrapper.querySelector("#crm-sheets-toggle");
 
       const SHEETS_ENDPOINT = "PASTE_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
-      const STORAGE_KEY = "protecnica_crm_leads";
       let leads = [];
-      let useSheets = false;
 
       const utm = (() => {
         const params = new URLSearchParams(window.location.search);
@@ -431,14 +329,6 @@ function updateLead(payload) {
         setTimeout(() => {
           message.style.display = "none";
         }, 4000);
-      };
-
-      const saveLocal = () => {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(leads));
-      };
-
-      const loadLocal = () => {
-        leads = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
       };
 
       const fetchSheets = async () => {
@@ -476,12 +366,16 @@ function updateLead(payload) {
             <td><strong>${lead.nombre || ""}</strong><br/><span class="pill">${lead.empresa || "-"}</span></td>
             <td>${lead.telefono || "-"}</td>
             <td>${lead.canal_origen || "-"}</td>
-            <td>${lead.tipo_solicitud || "-"}</td>
             <td>
               <select class="inline-input" data-field="vendedor_asignado">
                 <option value="">Asignar</option>
-                <option value="Vendedor 1">Vendedor 1</option>
-                <option value="Vendedor 2">Vendedor 2</option>
+                <option value="Felipe">Felipe</option>
+                <option value="Jorge">Jorge</option>
+                <option value="Paulo">Paulo</option>
+                <option value="Franco">Franco</option>
+                <option value="Miguel">Miguel</option>
+                <option value="Aldo">Aldo</option>
+                <option value="Reinier">Reinier</option>
               </select>
             </td>
             <td>
@@ -523,27 +417,14 @@ function updateLead(payload) {
       };
 
       const addLead = async (payload) => {
-        if (useSheets) {
-          await postSheets("createLead", payload);
-          await fetchSheets();
-        } else {
-          leads.push(payload);
-          saveLocal();
-        }
+        await postSheets("createLead", payload);
+        await fetchSheets();
         renderTable();
       };
 
       const updateLead = async (payload) => {
-        if (useSheets) {
-          await postSheets("updateLead", payload);
-          await fetchSheets();
-        } else {
-          const index = leads.findIndex((item) => item.id === payload.id);
-          if (index !== -1) {
-            leads[index] = payload;
-            saveLocal();
-          }
-        }
+        await postSheets("updateLead", payload);
+        await fetchSheets();
         renderTable();
       };
 
@@ -566,14 +447,15 @@ function updateLead(payload) {
           created_at: new Date().toISOString(),
           nombre,
           empresa: data.get("empresa") || "",
+          rut: data.get("rut") || "",
           telefono,
           email,
           ciudad_comuna: data.get("ciudad_comuna") || "",
-          tipo_solicitud: data.get("tipo_solicitud") || "",
           necesita: data.get("necesita") || "",
           canal_origen: data.get("canal_origen") || "",
+          link_origen: window.location.href,
           ...utm,
-          vendedor_asignado: "",
+          vendedor_asignado: data.get("vendedor_asignado") || "",
           estado: "Nuevo",
           proxima_gestion: "",
           monto_cotizacion: "",
@@ -627,37 +509,12 @@ function updateLead(payload) {
 
         if (btn.dataset.action === "delete") {
           if (!confirm("¿Seguro que quieres borrar este lead?")) return;
-          if (useSheets) {
-            showMessage("El borrado debe hacerse en Sheets.", "error");
-            return;
-          }
-          leads = leads.filter((item) => item.id !== leadId);
-          saveLocal();
-          renderTable();
-          showMessage("Lead eliminado.", "success");
+          showMessage("El borrado debe hacerse en Sheets.", "error");
         }
       });
 
       filterState.addEventListener("change", renderTable);
       searchInput.addEventListener("input", renderTable);
-
-      sheetsToggle.addEventListener("change", async (event) => {
-        useSheets = event.target.checked;
-        try {
-          if (useSheets) {
-            await fetchSheets();
-            showMessage("Modo Google Sheets activado.", "success");
-          } else {
-            loadLocal();
-            showMessage("Modo local activado.", "success");
-          }
-          renderTable();
-        } catch (error) {
-          useSheets = false;
-          sheetsToggle.checked = false;
-          showMessage("No se pudo conectar con Sheets.", "error");
-        }
-      });
 
       exportBtn.addEventListener("click", () => {
         const headers = [
@@ -665,12 +522,13 @@ function updateLead(payload) {
           "created_at",
           "nombre",
           "empresa",
+          "rut",
           "telefono",
           "email",
           "ciudad_comuna",
-          "tipo_solicitud",
           "necesita",
           "canal_origen",
+          "link_origen",
           "utm_source",
           "utm_medium",
           "utm_campaign",
@@ -694,8 +552,12 @@ function updateLead(payload) {
       });
 
       const init = async () => {
-        loadLocal();
-        renderTable();
+        try {
+          await fetchSheets();
+          renderTable();
+        } catch (error) {
+          showMessage("No se pudo conectar con Sheets.", "error");
+        }
       };
 
       init();
